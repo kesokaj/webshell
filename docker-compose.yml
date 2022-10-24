@@ -4,7 +4,7 @@ services:
   webshell:
     container_name: webshell
     hostname: webshell
-    image: kesokaj/webshell:latest
+    image: ghcr.io/kesokaj/webshell:latest
     volumes:
     - ./data:/home
     environment:

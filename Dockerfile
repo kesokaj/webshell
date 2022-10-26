@@ -40,8 +40,12 @@ RUN curl -fsSL https://get.docker.com/ > /tmp/docker_ce.sh \
     && chmod +x /tmp/docker_ce.sh \
     && /tmp/docker_ce.sh
 
+## Install apps
 RUN apt-get update
 RUN apt-get install -y docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
+
+## Add completion
+RUN kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null
 
 ## Clean up
 RUN rm -rvf /tmp/*

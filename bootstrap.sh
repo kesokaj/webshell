@@ -12,7 +12,7 @@ fi
 ## Setup docker daemon and fix permissions
 cat << EOF > /etc/docker/daemon.json
 {
-  "data-root": "/home/${SHELL_USER}/.docker/data"
+  "data-root": "/home/${SHELL_USER}/.docker_data_root"
 }
 EOF
 

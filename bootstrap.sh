@@ -1,5 +1,8 @@
 #!/bin/bash
 
+## Start logging
+service rsyslog start
+
 ## Create user
 if [ "${SHELL_USER}" ] && [ "${SHELL_PASSWORD}" ]; then
   useradd -rm -d /home/${SHELL_USER} -s /bin/bash -G sudo,docker -u 666 ${SHELL_USER}
@@ -9,15 +12,19 @@ else
   exit 1
 fi
 
-## Setup docker daemon and fix permissions
+## Add to subuid & subgid
+echo "${SHELL_USER}:231072:65536" > /etc/subuid
+echo "${SHELL_USER}:231072:65536" > /etc/subgid
+
+## Fix docker config
 cat << EOF > /etc/docker/daemon.json
 {
-  "data-root": "/home/${SHELL_USER}/.docker_data_root"
+  "userns-remap": "${SHELL_USER}",
+  "data-root": "/home/${SHELL_USER}/.docker"
 }
 EOF
 
-## Start services
-service rsyslog start
+## Start user services
 service ssh start
 service docker start
 

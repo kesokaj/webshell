@@ -4,7 +4,7 @@ COPY bootstrap.sh bootstrap.sh
 RUN chmod +x bootstrap.sh
 
 # Prereq
-RUN apt-get update && apt-get install -y kmod dbus-user-session fuse-overlayfs sudo rsyslog gnupg ca-certificates software-properties-common curl wget apt-transport-https
+RUN apt-get update && apt-get install -y uidmap kmod dbus-user-session fuse-overlayfs sudo rsyslog gnupg ca-certificates software-properties-common curl wget apt-transport-https iptables
 
 ## Add kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg \
@@ -35,14 +35,9 @@ RUN curl -fsSL https://code-server.dev/install.sh > /tmp/code_server.sh \
     && chmod +x /tmp/code_server.sh \
     && /tmp/code_server.sh
 
-## Install docker
-RUN curl -fsSL https://get.docker.com/ > /tmp/docker_ce.sh \
-    && chmod +x /tmp/docker_ce.sh \
-    && /tmp/docker_ce.sh
-
 ## Install apps
 RUN apt-get update
-RUN apt-get install -y docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
+RUN apt-get install -y docker.io docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
 
 ## Add completion
 RUN kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null

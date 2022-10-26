@@ -41,7 +41,7 @@ RUN curl -fsSL https://get.docker.com/ > /tmp/docker_ce.sh \
     && /tmp/docker_ce.sh
 
 RUN apt-get update
-RUN apt-get install -y docker-compose vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
+RUN apt-get install -y docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
 
 ## Clean up
 RUN rm -rvf /tmp/*

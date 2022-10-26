@@ -4,7 +4,7 @@ COPY bootstrap.sh bootstrap.sh
 RUN chmod +x bootstrap.sh
 
 # Prereq
-RUN apt-get update && apt-get install -y sudo rsyslog gnupg ca-certificates software-properties-common curl wget apt-transport-https
+RUN apt-get update && apt-get install -y kmod dbus-user-session fuse-overlayfs sudo rsyslog gnupg ca-certificates software-properties-common curl wget apt-transport-https
 
 ## Add kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg \
@@ -43,6 +43,9 @@ RUN curl -fsSL https://get.docker.com/ > /tmp/docker_ce.sh \
 RUN apt-get update
 RUN apt-get install -y docker-compose vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
 
+## Clean up
+RUN rm -rvf /tmp/*
+RUN apt autoremove -y && apt autoclean -y
 
 EXPOSE 80 8080 22
 ENTRYPOINT ["/bootstrap.sh"]

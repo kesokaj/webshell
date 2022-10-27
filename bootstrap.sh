@@ -13,8 +13,8 @@ else
 fi
 
 ## Add to subuid & subgid
-echo "${SHELL_USER}:231072:65536" > /etc/subuid
-echo "${SHELL_USER}:231072:65536" > /etc/subgid
+echo "${SHELL_USER}:666:65536" > /etc/subuid
+echo "${SHELL_USER}:666:65536" > /etc/subgid
 
 ## Fix docker config
 cat << EOF > /etc/docker/daemon.json
@@ -28,8 +28,13 @@ EOF
 service ssh start
 service docker start
 
-### Start code server as
+## Start code server as
 su - ${SHELL_USER} -c "/usr/bin/code-server --bind-addr=0.0.0.0:80 --auth=none" > /dev/null 2>&1 &
+
+## Set permissions
+su - ${SHELL_USER} -c "docker ps" > /dev/null 2>&1 &
+sleep 5
+chmod -R 755 /home/${SHELL_USER}/.docker
 
 ## Start output logging
 sleep 5

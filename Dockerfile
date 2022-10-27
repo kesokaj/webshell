@@ -46,5 +46,5 @@ RUN kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null
 RUN rm -rvf /tmp/*
 RUN apt autoremove -y && apt autoclean -y
 
-EXPOSE 80 8080 22
+EXPOSE 80
 ENTRYPOINT ["/bootstrap.sh"]

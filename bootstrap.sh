@@ -29,7 +29,8 @@ service ssh start
 service docker start
 
 ## Start code server as
-su - ${SHELL_USER} -c "/usr/bin/code-server --bind-addr=0.0.0.0:80 --auth=none" > /dev/null 2>&1 &
+su - ${SHELL_USER} -c "mkdir -p /home/${SHELL_USER}/workspace" > /dev/null 2>&1 &
+su - ${SHELL_USER} -c '/usr/bin/code-server --bind-addr=0.0.0.0:80 --disable-telemetry --auth=none "${DEFAULT_WORKSPACE:-/home/${SHELL_USER}/workspace}"' > /dev/null 2>&1 &
 
 ## Set permissions
 su - ${SHELL_USER} -c "docker ps" > /dev/null 2>&1 &

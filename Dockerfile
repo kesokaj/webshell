@@ -1,7 +1,7 @@
 FROM debian:stable-slim
 
-COPY bootstrap.sh bootstrap.sh
-RUN chmod +x bootstrap.sh
+COPY init.sh init.sh
+RUN chmod +x init.sh
 
 # Prereq
 RUN apt-get update && apt-get install -y uidmap kmod dbus-user-session fuse-overlayfs sudo rsyslog gnupg ca-certificates software-properties-common curl wget apt-transport-https iptables
@@ -46,5 +46,8 @@ RUN kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null
 RUN rm -rvf /tmp/*
 RUN apt autoremove -y && apt autoclean -y
 
+ENV SHELL_USER user
+ENV SHELL_PASSWORD user
+
 EXPOSE 80
-ENTRYPOINT ["/bootstrap.sh"]
+ENTRYPOINT ["/init.sh"]

@@ -37,7 +37,7 @@ RUN curl -fsSL https://code-server.dev/install.sh > /tmp/code_server.sh \
 
 ## Install apps
 RUN apt-get update
-RUN apt-get install -y docker.io docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
+RUN apt-get install -y docker.io google-cloud-sdk-gke-gcloud-auth-plugin docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
 
 ## Add completion
 RUN kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null

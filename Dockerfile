@@ -1,4 +1,5 @@
 FROM debian:stable-slim
+LABEL org.opencontainers.image.source https://github.com/kesokaj/webshell
 
 COPY init.sh init.sh
 RUN chmod +x init.sh

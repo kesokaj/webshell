@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euxo pipefail
+
 ## Start logging
 service rsyslog start
 
@@ -37,6 +39,9 @@ su - ${SHELL_USER} -c "docker ps" > /dev/null 2>&1 &
 sleep 5
 chmod -R 755 /home/${SHELL_USER}/.docker
 
+## Fix coder logging
+ln -s /var/log/ /home/$SHELL_USER/.local/share/code-server/coder-logs/
+
 ## Start output logging
 sleep 5
-tail -q -f /dev/std* -f /home/${SHELL_USER}/.local/share/code-server/coder-logs/*.log
+tail -qf --retry /var/log/*.log

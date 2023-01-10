@@ -39,4 +39,4 @@ chmod -R 755 /home/${SHELL_USER}/.docker
 
 ## Start output logging
 sleep 5
-tail -f /var/log/* -f /home/${SHELL_USER}/.local/share/code-server/coder-logs/*.log
+tail -q -f /dev/std* -f /home/${SHELL_USER}/.local/share/code-server/coder-logs/*.log

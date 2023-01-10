@@ -1,11 +1,29 @@
 FROM debian:stable-slim
 LABEL org.opencontainers.image.source https://github.com/kesokaj/webshell
 
+EXPOSE 80
+
+ENV SHELL_USER user
+ENV SHELL_PASSWORD user
+
 COPY init.sh init.sh
 RUN chmod +x init.sh
 
 # Prereq
-RUN apt-get update && apt-get install -y uidmap kmod dbus-user-session fuse-overlayfs sudo rsyslog gnupg ca-certificates software-properties-common curl wget apt-transport-https iptables
+RUN apt-get update && apt-get install -y \
+    uidmap \
+    kmod \
+    dbus-user-session \
+    fuse-overlayfs \
+    sudo \
+    rsyslog \
+    gnupg \
+    ca-certificates \
+    software-properties-common \
+    curl \ 
+    wget \
+    apt-transport-https \
+    iptables
 
 ## Add kubectl
 RUN curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg \
@@ -37,18 +55,41 @@ RUN curl -fsSL https://code-server.dev/install.sh > /tmp/code_server.sh \
     && /tmp/code_server.sh
 
 ## Install apps
-RUN apt-get update
-RUN apt-get install -y docker.io google-cloud-sdk-gke-gcloud-auth-plugin docker-compose bash-completion vim net-tools dnsutils ssh google-cloud-cli iproute2 openssh-server lsof python3 python3-pip lftp npm git wget kubectl dnsutils iputils-ping nmap nmon s3cmd jq tldr terraform nano
+RUN apt-get update && apt-get install -y \
+    docker.io \
+    google-cloud-sdk-gke-gcloud-auth-plugin \
+    docker-compose \
+    bash-completion \
+    vim \
+    net-tools \
+    dnsutils \
+    ssh \
+    google-cloud-cli \
+    iproute2 \
+    openssh-server \
+    lsof \
+    python3 \
+    python3-pip \
+    lftp \
+    npm \
+    git \
+    wget \
+    kubectl \
+    dnsutils \
+    iputils-ping \
+    nmap \
+    nmon \
+    s3cmd \
+    jq \
+    tldr \
+    terraform \
+    nano \
+ && rm -rf /var/lib/apt/lists/*
 
 ## Add completion
 RUN kubectl completion bash | tee /etc/bash_completion.d/kubectl > /dev/null
 
 ## Clean up
 RUN rm -rvf /tmp/*
-RUN apt autoremove -y && apt autoclean -y
 
-ENV SHELL_USER user
-ENV SHELL_PASSWORD user
-
-EXPOSE 80
 ENTRYPOINT ["/init.sh"]

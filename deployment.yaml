@@ -1,0 +1,84 @@
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: webshell-workspace
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 64G
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: webshell
+  labels:
+    app: webshell
+spec:
+  replicas: 1
+  minReadySeconds: 15
+  selector:
+    matchLabels:
+      app: webshell
+  template:
+    metadata:
+      labels:
+        app: webshell
+    spec:
+      volumes:
+      - name: webshell-workspace
+        persistentVolumeClaim:
+          claimName: webshell-workspace
+      containers:
+      - name: webshell
+        image: ghcr.io/kesokaj/webshell:v6.2.2
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+        ports:
+        - name: http
+          containerPort: 3000
+        volumeMounts:
+        - name: webshell-workspace
+          mountPath: "/usr/local/workspace"
+        env:  
+        - name: TZ
+          value: Europe/Stockholm
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webshell
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 3000
+  selector:
+    app: webshell
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: webshell-app-spgo-se
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`webshell.app.spgo.se`)
+    kind: Rule
+    services:
+    - name: webshell
+      port: 80
+    middlewares:
+    - name: traefik-auth
+  tls:
+    certResolver: default

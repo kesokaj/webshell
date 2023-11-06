@@ -34,7 +34,7 @@ spec:
           claimName: webshell-workspace
       containers:
       - name: webshell
-        image: ghcr.io/kesokaj/webshell:v6.2.2
+        image: ghcr.io/kesokaj/webshell:v6.2.7
         securityContext:
           privileged: true
         resources:

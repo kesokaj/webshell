@@ -6,7 +6,7 @@ EXPOSE 3000
 ENV RELEASE bookworm
 ENV LOCAL_USER user
 ENV LOCAL_PASSWORD user
-ENV XDG_RUNTIME_DIR /usr/workspace/.docker/run
+ENV XDG_RUNTIME_DIR /usr/local/workspace/.docker/run
 
 COPY init.sh init.sh
 RUN chmod +x init.sh

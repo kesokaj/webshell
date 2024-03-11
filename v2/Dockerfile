@@ -4,7 +4,7 @@ FROM debian:bookworm-slim
 LABEL org.opencontainers.image.source https://github.com/kesokaj/webshell
 
 ## Expose port
-EXPOSE 8080
+EXPOSE 3000
 
 ## Environments
 ENV ARCH="amd64"
